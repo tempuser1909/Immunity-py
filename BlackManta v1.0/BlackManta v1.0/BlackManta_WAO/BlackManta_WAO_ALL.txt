@@ -1,0 +1,396 @@
+;This file implements the BlackManta hooks for WinAPIOverride32
+;
+;Suggested Command Line usage:
+;WinAPIOverride32.exe AppPath="Path to malware" InjectOnlyAfter=100 MonitoringFiles="Path to BlackManta_WAO.txt" NoGUI SavingFileName="Path to log file"
+;
+;Example Command Line usage:
+;C:\Documents and Settings\Administrator\Desktop\RE Tools\WinApiOverride32\compiled>WinAPIOverride32.exe AppPath="C:\Windows\system32\calc.exe" InjectOnlyAfter=100 MonitoringFiles="C:\Documents and Settings\Administrator\Desktop\RE Tools\WinApiOverride32\monitoring files\Manta\BlackManta_WAO_Hooks.txt" NoGUI SavingFileName="c:\log.txt"
+;
+;Or just RTFM
+
+;Registry Monitoring
+;
+;
+advapi32.dll|LONG RegOpenKeyA( HKEY hKey, LPCSTR  lpSubKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegOpenKeyExA( HKEY hKey, LPCSTR  lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegOpenKeyExW( HKEY hKey, LPCWSTR lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegOpenKeyW( HKEY hKey, LPCWSTR lpSubKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegCreateKeyA( HKEY hKey, LPCSTR  lpSubKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegCreateKeyExA( HKEY hKey, LPCSTR  lpSubKey, DWORD Reserved, LPSTR  lpClass, DWORD dwOptions, REGSAM samDesired, LPSECURITY_ATTRIBUTES lpSecurityAttributes, PHKEY phkResult, LPDWORD lpdwDisposition)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegCreateKeyExW( HKEY hKey, LPCWSTR lpSubKey, DWORD Reserved, LPWSTR lpClass, DWORD dwOptions, REGSAM samDesired, LPSECURITY_ATTRIBUTES lpSecurityAttributes, PHKEY phkResult, LPDWORD lpdwDisposition)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegCreateKeyW( HKEY hKey, LPCWSTR lpSubKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegQueryValueA( HKEY hKey, LPCSTR  lpSubKey, LPSTR  lpValue, PLONG lpcbValue)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegQueryValueExA( HKEY hKey, LPCSTR  lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegQueryValueExW( HKEY hKey, LPCWSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegQueryValueW( HKEY hKey, LPCWSTR lpSubKey, LPWSTR lpValue, PLONG lpcbValue)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegSetValueA( HKEY hKey, LPCSTR  lpSubKey, DWORD dwType, LPCSTR  lpData, DWORD cbData)|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegSetValueExA( HKEY hKey, LPCSTR  lpValueName, DWORD Reserved, DWORD dwType, const BYTE* lpData, DWORD cbData)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegSetValueExW( HKEY hKey, LPCWSTR lpValueName, DWORD Reserved, DWORD dwType, const BYTE* lpData, DWORD cbData)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegSetValueW( HKEY hKey, LPCWSTR lpSubKey, DWORD dwType, LPCWSTR lpData, DWORD cbData)|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegCloseKey( HKEY hKey)|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegConnectRegistryA( LPCSTR  lpMachineName, HKEY hKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegConnectRegistryW( LPCWSTR lpMachineName, HKEY hKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+
+
+;File Monitoring
+;
+;
+kernel32.dll|HANDLE CreateFileA( LPCSTR  lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)|FailureIfRetValue=0xFFFFFFFF
+;
+kernel32.dll|HANDLE CreateFileW( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)|FailureIfRetValue=0xFFFFFFFF
+;
+!kernel32.dll|BOOL ReadFile( HANDLE hFile, LPVOID lpBuffer:PointedDataSize=Arg4, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped)|Out|FailureIfNullRet|FailureIfLastErrorValue!=997
+;
+kernel32.dll|BOOL ReadFileEx( HANDLE hFile, LPVOID lpBuffer:PointedDataSize=Arg3, DWORD nNumberOfBytesToRead, LPOVERLAPPED lpOverlapped, LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfNullRet|FailureIfLastErrorValue!=997
+;
+!kernel32.dll|BOOL WriteFile( HANDLE hFile, LPCVOID lpBuffer:PointedDataSize=Arg3, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped)|Out|FailureIfNullRet|FailureIfLastErrorValue!=997
+;
+kernel32.dll|BOOL WriteFileEx( HANDLE hFile, LPCVOID lpBuffer:PointedDataSize=Arg3, DWORD nNumberOfBytesToWrite, LPOVERLAPPED lpOverlapped, LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfNullRet|FailureIfLastErrorValue!=997
+;
+kernel32.dll|BOOL DeleteFileA( LPCSTR  lpFileName)|FailureIfNullRet
+;
+kernel32.dll|BOOL DeleteFileW( LPCWSTR lpFileName)|FailureIfNullRet
+;
+kernel32.dll|BOOL MoveFileExA( LPCSTR  lpExistingFileName, LPCSTR  lpNewFileName, DWORD dwFlags)|FailureIfNullRet
+;
+kernel32.dll|BOOL MoveFileExW( LPCWSTR lpExistingFileName, LPCWSTR lpNewFileName, DWORD dwFlags)|FailureIfNullRet
+
+
+;DNS Request Monitoring
+;
+;
+Dnsapi.dll|DNS_STATUS DnsQuery_A(PCSTR lpstrName, WORD wType, DWORD fOptions. PVOID pExtra, PDNS_RECORD* ppQueryResultSet, PVOID* pReserved)|Out|FailureIfNotNullRet
+;
+Dnsapi.dll|DNS_STATUS DnsQuery_W(PCSTR lpstrName, WORD wType, DWORD fOptions. PVOID pExtra, PDNS_RECORD* ppQueryResultSet, PVOID* pReserved)|Out|FailureIfNotNullRet
+;
+Dnsapi.dll|DNS_STATUS DnsQuery_UTF8(PCSTR lpstrName, WORD wType, DWORD fOptions. PVOID pExtra, PDNS_RECORD* ppQueryResultSet, PVOID* pReserved)|Out|FailureIfNotNullRet
+
+;General Socket Communication Monitoring
+;
+;
+ws2_32.dll|int WSAStartup( WORD wVersionRequested, LPWSADATA lpWSAData)|Out|FailureIfNotNullRet
+;
+ws2_32.dll|int listen( SOCKET Socket, int backlog)|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|SOCKET accept( SOCKET Socket, struct sockaddr* addr, int* addrlen)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int recv( SOCKET Socket, PBYTE buf:PointedDataSize=Arg3, int len, int flags)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int recvfrom( SOCKET Socket, PBYTE buf:PointedDataSize=Arg3, int len, int flags, struct sockaddr* from, int* fromlen)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int WSARecvFrom( SOCKET Socket, LPWSABUF lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesRecvd, LPDWORD lpFlags, struct sockaddr* lpFrom, LPINT lpFromlen, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int WSARecv( SOCKET Socket, LPWSABUF lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesRecvd, LPDWORD lpFlags, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int send( SOCKET Socket, PBYTE buf:PointedDataSize=Arg3, int len, int flags)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int WSASend( SOCKET Socket, LPWSABUF lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesSent, DWORD dwFlags, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int WSASendTo( SOCKET Socket, LPWSABUF lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesSent, DWORD dwFlags, const struct sockaddr* lpTo, int iToLen, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfRetValue=0xFFFFFFFF
+
+;Promiscuous Mode Monitoring
+;(These are API's that can be used
+;to place the NIC into promiscuous mode)
+;
+ws2_32.dll|SOCKET WSASocketA( int af, int type, int protocol, LPWSAPROTOCOL_INFOA lpProtocolInfo, UINT group, DWORD dwFlags)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|SOCKET WSASocketW( int af, int type, int protocol, LPWSAPROTOCOL_INFOW lpProtocolInfo, UINT group, DWORD dwFlags)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|SOCKET WSAAPI socket( int af, int type, int protocol)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int bind(SOCKET Socket, const struct sockaddr* name, int namelen)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int WSAIoctl( SOCKET Socket, DWORD dwIoControlCode, LPVOID lpvInBuffer, DWORD cbInBuffer, LPVOID lpvOutBuffer, DWORD cbOutBuffer, LPDWORD lpcbBytesReturned, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int ioctlsocket( SOCKET Socket, long cmd, u_long* argp)|Out|FailureIfRetValue=0xFFFFFFFF
+
+;Packet Spoofing Monitoring
+;(These are API's associated with
+;winpcap and can be used to spoof
+;packets)
+;Need to get prototypes
+;
+packet.dll|PacketOpenAdapter(UNKNOWN) 
+;
+packet.dll|PacketSetBuff(UNKNOWN)
+;
+packet.dll|PacketAllocatePacket(UNKNOWN)
+;
+packet.dll|PacketInitPacket(UNKNOWN)
+;
+packet.dll|PacketSendPacket(UNKNOWN)
+
+;HTTP Tunneling Monitoring
+;
+;
+Wininet.dll|HINTERNET InternetOpenA( LPCTSTR lpszAgent, DWORD dwAccessType, LPCTSTR lpszProxyName, LPCTSTR lpszProxyBypass, DWORD dwFlags)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET InternetOpenW( LPCTSTR lpszAgent, DWORD dwAccessType, LPCTSTR lpszProxyName, LPCTSTR lpszProxyBypass, DWORD dwFlags)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET InternetOpenUrlA( HINTERNET hInternet, LPCTSTR lpszUrl, LPCTSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET InternetOpenUrlW( HINTERNET hInternet, LPCTSTR lpszUrl, LPCTSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET InternetConnectA( HINTERNET hInternet, LPCTSTR lpszServerName, INTERNET_PORT nServerPort, LPCTSTR lpszUserName, LPCTSTR lpszPassword, DWORD dwService, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET InternetConnectW( HINTERNET hInternet, LPCTSTR lpszServerName, INTERNET_PORT nServerPort, LPCTSTR lpszUserName, LPCTSTR lpszPassword, DWORD dwService, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET HttpOpenRequestA( HINTERNET hConnect, LPCTSTR lpszVerb, LPCTSTR lpszObjectName, LPCTSTR lpszVersion, LPCTSTR lpszReferer, LPCTSTR* lplpszAcceptTypes, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET HttpOpenRequestW( HINTERNET hConnect, LPCTSTR lpszVerb, LPCTSTR lpszObjectName, LPCTSTR lpszVersion, LPCTSTR lpszReferer, LPCTSTR* lplpszAcceptTypes, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|BOOL HttpAddRequestHeadersA( HINTERNET hConnect, LPCTSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwModifiers)|Out|FailureIfNullRet
+;
+Wininet.dll|BOOL HttpAddRequestHeadersW( HINTERNET hConnect, LPCTSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwModifiers)|Out|FailureIfNullRet
+;
+Wininet.dll|BOOL InternetReadFile( HINTERNET hFile, LPVOID lpBuffer, DWORD dwNumberOfBytesToRead, LPDWORD lpdwNumberOfBytesRead)|Out|FailureIfNullRet
+;
+Wininet.dll|BOOL InternetReadFileExA( HINTERNET hFile, LPINTERNET_BUFFERS lpBuffersOut, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|BOOL InternetReadFileExW( HINTERNET hFile, LPINTERNET_BUFFERS lpBuffersOut, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Urlmon.dll|HRESULT URLDownloadToFileA( LPUNKNOWN pCaller, LPCTSTR szURL, LPCTSTR szFileName, DWORD dwReserved, LPBINDSTATUSCALLBACK lpfnCB)|Out|FailureIfNotNullRet
+
+;Process Injection Monitoring
+;
+;
+kernel32.dll|LPVOID VirtualAllocEx( HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)|Out
+;
+kernel32.dll|HANDLE CreateRemoteThread( HANDLE hProcess, LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId)|Out|FailureIfNullRet
+;
+kernel32.dll|HANDLE OpenProcess( DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId)|FailureIfNullRet
+;
+kernel32.dll|HANDLE OpenThread( DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwThreadId)|FailureIfNullRet
+;
+kernel32.dll|BOOL ReadProcessMemory( HANDLE hProcess, LPCVOID lpBaseAddress, LPVOID lpBuffer:PointedDataSize=Arg5, DWORD nSize, LPDWORD lpNumberOfBytesRead )|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL WriteProcessMemory( HANDLE hProcess, LPVOID lpBaseAddress, LPVOID lpBuffer:PointedDataSize=Arg4, DWORD nSize, LPDWORD lpNumberOfBytesWritten )|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateToolhelp32Snapshot( DWORD dwFlags, DWORD th32ProcessID)|FailureIfNullRet
+;
+kernel32.dll|BOOL Process32First( HANDLE hSnapshot, LPPROCESSENTRY32 lppe)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Process32FirstW( HANDLE hSnapshot, LPPROCESSENTRY32W lppe)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Process32Next( HANDLE hSnapshot, LPPROCESSENTRY32 lppe)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Process32NextW( HANDLE hSnapshot, LPPROCESSENTRY32W lppe)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Module32First( HANDLE hSnapshot, LPMODULEENTRY32 lpme)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Module32FirstW( HANDLE hSnapshot, LPMODULEENTRY32W lpme)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Module32Next( HANDLE hSnapshot, LPMODULEENTRY32 lpme)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Module32NextW( HANDLE hSnapshot, LPMODULEENTRY32W lpme)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Thread32First( HANDLE hSnapshot, LPTHREADENTRY32 lpte)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Thread32Next( HANDLE hSnapshot, LPTHREADENTRY32 lpte)|Out|FailureIfNullRet
+;
+user32.dll|DWORD GetWindowThreadProcessId( HWND hWnd, LPDWORD lpdwProcessId)|Out
+;
+user32.dll|HHOOK SetWindowsHookA(int idHook, HOOKPROC lpfn)
+;
+user32.dll|HHOOK SetWindowsHookExA( int idHook, HOOKPROC lpfn, HINSTANCE hMod, DWORD dwThreadId)
+;
+user32.dll|HHOOK SetWindowsHookExW( int idHook, HOOKPROC lpfn, HINSTANCE hMod, DWORD dwThreadId)
+;
+user32.dll|HHOOK SetWindowsHookW(int idHook, HOOKPROC lpfn)
+;
+kernel32.dll|BOOL SetThreadContext( HANDLE hThread, const CONTEXT* lpContext)|Out
+;
+kernel32.dll|EXECUTION_STATE SetThreadExecutionState( EXECUTION_STATE esFlags)
+;
+kernel32.dll|BOOL GetThreadContext( HANDLE hThread, LPCONTEXT lpContext)|FailureIfNullRet
+;
+kernel32.dll|DWORD SuspendThread( HANDLE hThread)
+;
+kernel32.dll|DWORD ResumeThread( HANDLE hThread)
+;
+ntdll.dll|NtMapViewOfSection(HANDLE SectionHandle,HANDLE ProcessHandle,PVOID *BaseAddress ,ULONG ZeroBits ,ULONG CommitSize,PLARGE_INTEGER SectionOffset ,PULONG ViewSize,SECTION_INHERIT InheritDisposition,ULONG AllocationType ,ULONG Protect)|FailureIfNotNullRet
+;
+kernel32.dll|DWORD QueueUserAPC( PAPCFUNC pfnAPC, HANDLE hThread, ULONG_PTR dwData)|Out
+;
+advapi32.dll|BOOL OpenThreadToken( HANDLE ThreadHandle, DWORD DesiredAccess, BOOL OpenAsSelf, PHANDLE TokenHandle)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL OpenProcessToken( HANDLE ProcessHandle, DWORD DesiredAccess, PHANDLE TokenHandle)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL AdjustTokenPrivileges( HANDLE TokenHandle, BOOL DisableAllPrivileges, PTOKEN_PRIVILEGES NewState, DWORD BufferLength, PTOKEN_PRIVILEGES PreviousState, PDWORD ReturnLength)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL LookupPrivilegeNameA( LPCSTR  lpSystemName, PLUID lpLuid, LPSTR  lpName, LPDWORD cchName)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL LookupPrivilegeNameW( LPCWSTR lpSystemName, PLUID lpLuid, LPWSTR lpName, LPDWORD cchName)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL LookupPrivilegeValueA( LPCSTR  lpSystemName, LPCSTR  lpName, PLUID lpLuid)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL LookupPrivilegeValueW( LPCWSTR lpSystemName, LPCWSTR lpName, PLUID lpLuid)|Out|FailureIfNullRet
+
+
+;Process Creation Monitoring
+;
+;
+kernel32.dll|BOOL CreateProcessA( LPCSTR  lpApplicationName, LPSTR  lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR  lpCurrentDirectory, LPSTARTUPINFO lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL CreateProcessW( LPCWSTR lpApplicationName, LPWSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFO lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)|Out|FailureIfNullRet
+;
+kernel32.dll|UINT WinExec( LPCSTR lpCmdLine, UINT uCmdShow)|FailureIfUnsignedRet<32
+;
+advapi32.dll|BOOL CreateProcessAsUserA( HANDLE hToken, LPCSTR  lpApplicationName, LPSTR  lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR  lpCurrentDirectory, LPSTARTUPINFO lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL CreateProcessAsUserW( HANDLE hToken, LPCWSTR lpApplicationName, LPWSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFO lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)|Out|FailureIfNullRet
+;
+advapi32.dll|CreateProcessWithLogonW( LPCWSTR UserName,LPCWSTR Domain,LPCWSTR Password,LONG LogonFlags,LPCWSTR AppName,LPCWSTR CmdLine,LONG CreationFlags,LONG Environnement,LPCWSTR CurrentDir,PSTARTUP_INFO,PPROCESS_INFORMATION)
+;
+;Vista Only
+advapi32.dll|BOOL CreateProcessWithTokenW( HANDLE hToken, DWORD dwLogonFlags, LPCWSTR lpApplicationName, LPWSTR lpCommandLine, DWORD dwCreationFlags, LPVOID lpEnviornment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION lpProcessInfo)|Out|FailureIfNullRet
+;
+shell32.dll|HINSTANCE ShellExecuteA( HWND hwnd, LPCSTR  lpOperation, LPCSTR  lpFile, LPCSTR  lpParameters, LPCSTR  lpDirectory, INT nShowCmd)|FailureIfUnsignedRet<33
+;
+shell32.dll|BOOL ShellExecuteExA( LPSHELLEXECUTEINFO lpExecInfo)|Out|FailureIfNullRet
+;
+shell32.dll|BOOL ShellExecuteExW( LPSHELLEXECUTEINFO lpExecInfo)|Out|FailureIfNullRet
+;
+shell32.dll|HINSTANCE ShellExecuteW( HWND hwnd, LPCWSTR lpOperation, LPCWSTR lpFile, LPCWSTR lpParameters, LPCWSTR lpDirectory, INT nShowCmd)|FailureIfUnsignedRet<33
+;
+advapi32|CreateProcessAsUserSecure(UNKNOWN)
+;
+kernel32.dll|BOOL CreateProcessInternalW(HANDLE hToken, LPCWSTR lpApplicationName, LPWSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation, PHANDLE hNewToken)|Out|FailureIfNullRet
+
+
+
+;Service Starting/Creation Monitoring
+;
+;
+advapi32.dll|SC_HANDLE OpenSCManagerA( LPCSTR  lpMachineName, LPCSTR  lpDatabaseName, DWORD dwDesiredAccess)|FailureIfNullRet
+;
+advapi32.dll|SC_HANDLE OpenSCManagerW( LPCWSTR lpMachineName, LPCWSTR lpDatabaseName, DWORD dwDesiredAccess)|FailureIfNullRet
+;
+advapi32.dll|SC_HANDLE OpenServiceA( SC_HANDLE hSCManager, LPCSTR  lpServiceName, DWORD dwDesiredAccess)|FailureIfNullRet
+;
+advapi32.dll|SC_HANDLE OpenServiceW( SC_HANDLE hSCManager, LPCWSTR lpServiceName, DWORD dwDesiredAccess)|FailureIfNullRet
+;
+advapi32.dll|BOOL StartServiceA( SC_HANDLE hService, DWORD dwNumServiceArgs, LPCTSTR* lpServiceArgVectors)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL StartServiceW( SC_HANDLE hService, DWORD dwNumServiceArgs, LPCTSTR* lpServiceArgVectors)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL ControlService( SC_HANDLE hService, DWORD dwControl, LPSERVICE_STATUS lpServiceStatus)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL ChangeServiceConfigA( SC_HANDLE hService, DWORD dwServiceType, DWORD dwStartType, DWORD dwErrorControl, LPCSTR  lpBinaryPathName, LPCSTR  lpLoadOrderGroup, LPDWORD lpdwTagId, LPCSTR  lpDependencies, LPCSTR  lpServiceStartName, LPCSTR  lpPassword, LPCSTR  lpDisplayName)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL ChangeServiceConfigW( SC_HANDLE hService, DWORD dwServiceType, DWORD dwStartType, DWORD dwErrorControl, LPCWSTR lpBinaryPathName, LPCWSTR lpLoadOrderGroup, LPDWORD lpdwTagId, LPCWSTR lpDependencies, LPCWSTR lpServiceStartName, LPCWSTR lpPassword, LPCWSTR lpDisplayName)|Out|FailureIfNullRet
+;
+advapi32.dll|ChangeServiceConfig2A( SC_HANDLE hService, DWORD dwInfoLevel, LPVOID lpInfo)|Out|FailureIfNullRet
+;
+advapi32.dll|ChangeServiceConfig2W( SC_HANDLE hService, DWORD dwInfoLevel, LPVOID lpInfo)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL DeleteService( SC_HANDLE hService)|FailureIfNullRet
+
+
+;Keylogging Monitoring
+;(Need More Here)
+;
+user32.dll|BOOL GetKeyboardState( PBYTE lpKeyState)|Out|FailureIfNullRet
+;
+user32.dll|SHORT GetKeyState( int nVirtKey )
+;
+user32.dll|SHORT GetAsyncKeyState( int vKey )
+;
+user32.dll|HWND GetForegroundWindow()|FailureIfNullRet
+
+;Generic Malicious Indicators
+;
+;
+;CreateSemaporeEx Only on vista
+kernel32.dll|HANDLE CreateSemaphoreEx( LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount, LPCTSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)|Out|FailureIfNullRet 
+;
+;CreateMutexExA Only on vista
+kernel32.dll|HANDLE CreateMutexExA( LPSECURITY_ATTRIBUTES lpMutexAttributes, LPCTSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)|Out|FailureIfNullRet
+;
+;CreateMutexExW Only on vista
+kernel32.dll|HANDLE CreateMutexExW( LPSECURITY_ATTRIBUTES lpMutexAttributes, LPCTSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)|Out|FailureIfNullRet
+;
+;CreateEventExA Only on vista
+kernel32.dll|HANDLE CreateEventExA( LPSECURITY_ATTRIBUTES lpEventAttributes, LPCTSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)|Out|FailureIfNotNull
+;
+;CreateEventExW Only on vista
+kernel32.dll|HANDLE CreateEventExW( LPSECURITY_ATTRIBUTES lpEventAttributes, LPCTSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)|Out|FailureIfNotNull
+;
+kernel32.dll|HANDLE CreateMutexA( LPSECURITY_ATTRIBUTES lpMutexAttributes, BOOL bInitialOwner, LPCSTR  lpName)|Out|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateMutexW( LPSECURITY_ATTRIBUTES lpMutexAttributes, BOOL bInitialOwner, LPCWSTR lpName)|Out|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateEventA( LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCSTR  lpName)|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateEventW( LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCWSTR lpName)|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateSemaphoreA( LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount, LPCSTR  lpName)|Out|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateSemaphoreW( LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount, LPCWSTR lpName)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL VirtualProtect( LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL VirtualProtectEx( HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect)|Out|FailureIfNullRet
+;
+kernel32.dll|HMODULE LoadLibraryA( LPCSTR  lpFileName)|FailureIfNullRet
+;
+kernel32.dll|HMODULE LoadLibraryExA( LPCSTR  lpFileName, HANDLE hFile, DWORD dwFlags)|FailureIfNullRet
+;
+kernel32.dll|HMODULE LoadLibraryExW( LPCWSTR lpFileName, HANDLE hFile, DWORD dwFlags)|FailureIfNullRet
+;
+kernel32.dll|HMODULE LoadLibraryW( LPCWSTR lpFileName)|FailureIfNullRet
+;
+kernel32.dll|DWORD LoadModule( LPCSTR lpModuleName, LPVOID lpParameterBlock)|Out
+;
+kernel32.dll|HGLOBAL LoadResource( HMODULE hModule, HRSRC hResInfo)|FailureIfNullRet
+;
+kernel32.dll|HMODULE GetModuleHandleA( LPCSTR  lpModuleName)|FailureIfNullRet
+;
+kernel32.dll|BOOL GetModuleHandleExA( DWORD dwFlags, LPCSTR  lpModuleName, HMODULE* phModule)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL GetModuleHandleExW( DWORD dwFlags, LPCWSTR lpModuleName, HMODULE* phModule)|Out|FailureIfNullRet
+;
+kernel32.dll|HMODULE GetModuleHandleW( LPCWSTR lpModuleName)|FailureIfNullRet
+;
+kernel32.dll|FARPROC GetProcAddress( HMODULE hModule, LPCSTR lpProcName)|FailureIfNullRet
+;
+ntdll.dll|NtLoadDriver(PUNICODE_STRING DriverServiceName)|FailureIfNotNullRet
+;
+ntdll.dll|NtSetSystemInformation(SYSTEM_INFORMATION_CLASS SystemInformationClass,PVOID SystemInformation,ULONG SystemInformationLength)|FailureIfNotNullRet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

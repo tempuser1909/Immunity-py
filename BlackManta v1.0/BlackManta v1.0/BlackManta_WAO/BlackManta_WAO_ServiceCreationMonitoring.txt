@@ -1,0 +1,26 @@
+;Service Starting/Creation Monitoring
+;
+;
+advapi32.dll|SC_HANDLE OpenSCManagerA( LPCSTR  lpMachineName, LPCSTR  lpDatabaseName, DWORD dwDesiredAccess)|FailureIfNullRet
+;
+advapi32.dll|SC_HANDLE OpenSCManagerW( LPCWSTR lpMachineName, LPCWSTR lpDatabaseName, DWORD dwDesiredAccess)|FailureIfNullRet
+;
+advapi32.dll|SC_HANDLE OpenServiceA( SC_HANDLE hSCManager, LPCSTR  lpServiceName, DWORD dwDesiredAccess)|FailureIfNullRet
+;
+advapi32.dll|SC_HANDLE OpenServiceW( SC_HANDLE hSCManager, LPCWSTR lpServiceName, DWORD dwDesiredAccess)|FailureIfNullRet
+;
+advapi32.dll|BOOL StartServiceA( SC_HANDLE hService, DWORD dwNumServiceArgs, LPCTSTR* lpServiceArgVectors)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL StartServiceW( SC_HANDLE hService, DWORD dwNumServiceArgs, LPCTSTR* lpServiceArgVectors)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL ControlService( SC_HANDLE hService, DWORD dwControl, LPSERVICE_STATUS lpServiceStatus)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL ChangeServiceConfigA( SC_HANDLE hService, DWORD dwServiceType, DWORD dwStartType, DWORD dwErrorControl, LPCSTR  lpBinaryPathName, LPCSTR  lpLoadOrderGroup, LPDWORD lpdwTagId, LPCSTR  lpDependencies, LPCSTR  lpServiceStartName, LPCSTR  lpPassword, LPCSTR  lpDisplayName)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL ChangeServiceConfigW( SC_HANDLE hService, DWORD dwServiceType, DWORD dwStartType, DWORD dwErrorControl, LPCWSTR lpBinaryPathName, LPCWSTR lpLoadOrderGroup, LPDWORD lpdwTagId, LPCWSTR lpDependencies, LPCWSTR lpServiceStartName, LPCWSTR lpPassword, LPCWSTR lpDisplayName)|Out|FailureIfNullRet
+;
+advapi32.dll|ChangeServiceConfig2A( SC_HANDLE hService, DWORD dwInfoLevel, LPVOID lpInfo)|Out|FailureIfNullRet
+;
+advapi32.dll|ChangeServiceConfig2W( SC_HANDLE hService, DWORD dwInfoLevel, LPVOID lpInfo)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL DeleteService( SC_HANDLE hService)|FailureIfNullRet

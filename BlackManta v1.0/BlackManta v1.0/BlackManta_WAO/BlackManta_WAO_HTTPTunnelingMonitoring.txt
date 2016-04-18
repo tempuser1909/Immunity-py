@@ -1,0 +1,30 @@
+;HTTP Tunneling Monitoring
+;
+;
+Wininet.dll|HINTERNET InternetOpenA( LPCTSTR lpszAgent, DWORD dwAccessType, LPCTSTR lpszProxyName, LPCTSTR lpszProxyBypass, DWORD dwFlags)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET InternetOpenW( LPCTSTR lpszAgent, DWORD dwAccessType, LPCTSTR lpszProxyName, LPCTSTR lpszProxyBypass, DWORD dwFlags)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET InternetOpenUrlA( HINTERNET hInternet, LPCTSTR lpszUrl, LPCTSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET InternetOpenUrlW( HINTERNET hInternet, LPCTSTR lpszUrl, LPCTSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET InternetConnectA( HINTERNET hInternet, LPCTSTR lpszServerName, INTERNET_PORT nServerPort, LPCTSTR lpszUserName, LPCTSTR lpszPassword, DWORD dwService, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET InternetConnectW( HINTERNET hInternet, LPCTSTR lpszServerName, INTERNET_PORT nServerPort, LPCTSTR lpszUserName, LPCTSTR lpszPassword, DWORD dwService, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET HttpOpenRequestA( HINTERNET hConnect, LPCTSTR lpszVerb, LPCTSTR lpszObjectName, LPCTSTR lpszVersion, LPCTSTR lpszReferer, LPCTSTR* lplpszAcceptTypes, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|HINTERNET HttpOpenRequestW( HINTERNET hConnect, LPCTSTR lpszVerb, LPCTSTR lpszObjectName, LPCTSTR lpszVersion, LPCTSTR lpszReferer, LPCTSTR* lplpszAcceptTypes, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|BOOL HttpAddRequestHeadersA( HINTERNET hConnect, LPCTSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwModifiers)|Out|FailureIfNullRet
+;
+Wininet.dll|BOOL HttpAddRequestHeadersW( HINTERNET hConnect, LPCTSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwModifiers)|Out|FailureIfNullRet
+;
+Wininet.dll|BOOL InternetReadFile( HINTERNET hFile, LPVOID lpBuffer, DWORD dwNumberOfBytesToRead, LPDWORD lpdwNumberOfBytesRead)|Out|FailureIfNullRet
+;
+Wininet.dll|BOOL InternetReadFileExA( HINTERNET hFile, LPINTERNET_BUFFERS lpBuffersOut, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Wininet.dll|BOOL InternetReadFileExW( HINTERNET hFile, LPINTERNET_BUFFERS lpBuffersOut, DWORD dwFlags, DWORD_PTR dwContext)|Out|FailureIfNullRet
+;
+Urlmon.dll|HRESULT URLDownloadToFileA( LPUNKNOWN pCaller, LPCTSTR szURL, LPCTSTR szFileName, DWORD dwReserved, LPBINDSTATUSCALLBACK lpfnCB)|Out|FailureIfNotNullRet

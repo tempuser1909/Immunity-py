@@ -1,0 +1,8 @@
+;DNS Request Monitoring
+;
+;
+Dnsapi.dll|DNS_STATUS DnsQuery_A(PCSTR lpstrName, WORD wType, DWORD fOptions. PVOID pExtra, PDNS_RECORD* ppQueryResultSet, PVOID* pReserved)|Out|FailureIfNotNullRet
+;
+Dnsapi.dll|DNS_STATUS DnsQuery_W(PCSTR lpstrName, WORD wType, DWORD fOptions. PVOID pExtra, PDNS_RECORD* ppQueryResultSet, PVOID* pReserved)|Out|FailureIfNotNullRet
+;
+Dnsapi.dll|DNS_STATUS DnsQuery_UTF8(PCSTR lpstrName, WORD wType, DWORD fOptions. PVOID pExtra, PDNS_RECORD* ppQueryResultSet, PVOID* pReserved)|Out|FailureIfNotNullRet

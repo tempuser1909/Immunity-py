@@ -1,0 +1,15 @@
+;Packet Spoofing Monitoring
+;(These are API's associated with
+;winpcap and can be used to spoof
+;packets)
+;Need to get prototypes
+;
+packet.dll|PacketOpenAdapter(UNKNOWN) 
+;
+packet.dll|PacketSetBuff(UNKNOWN)
+;
+packet.dll|PacketAllocatePacket(UNKNOWN)
+;
+packet.dll|PacketInitPacket(UNKNOWN)
+;
+packet.dll|PacketSendPacket(UNKNOWN)

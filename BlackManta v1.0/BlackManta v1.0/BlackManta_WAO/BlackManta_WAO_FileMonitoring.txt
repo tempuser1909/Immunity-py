@@ -1,0 +1,22 @@
+;File Monitoring
+;
+;
+kernel32.dll|HANDLE CreateFileA( LPCSTR  lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)|FailureIfRetValue=0xFFFFFFFF
+;
+kernel32.dll|HANDLE CreateFileW( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)|FailureIfRetValue=0xFFFFFFFF
+;
+!kernel32.dll|BOOL ReadFile( HANDLE hFile, LPVOID lpBuffer:PointedDataSize=Arg4, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped)|Out|FailureIfNullRet|FailureIfLastErrorValue!=997
+;
+kernel32.dll|BOOL ReadFileEx( HANDLE hFile, LPVOID lpBuffer:PointedDataSize=Arg3, DWORD nNumberOfBytesToRead, LPOVERLAPPED lpOverlapped, LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfNullRet|FailureIfLastErrorValue!=997
+;
+!kernel32.dll|BOOL WriteFile( HANDLE hFile, LPCVOID lpBuffer:PointedDataSize=Arg3, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped)|Out|FailureIfNullRet|FailureIfLastErrorValue!=997
+;
+kernel32.dll|BOOL WriteFileEx( HANDLE hFile, LPCVOID lpBuffer:PointedDataSize=Arg3, DWORD nNumberOfBytesToWrite, LPOVERLAPPED lpOverlapped, LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfNullRet|FailureIfLastErrorValue!=997
+;
+kernel32.dll|BOOL DeleteFileA( LPCSTR  lpFileName)|FailureIfNullRet
+;
+kernel32.dll|BOOL DeleteFileW( LPCWSTR lpFileName)|FailureIfNullRet
+;
+kernel32.dll|BOOL MoveFileExA( LPCSTR  lpExistingFileName, LPCSTR  lpNewFileName, DWORD dwFlags)|FailureIfNullRet
+;
+kernel32.dll|BOOL MoveFileExW( LPCWSTR lpExistingFileName, LPCWSTR lpNewFileName, DWORD dwFlags)|FailureIfNullRet

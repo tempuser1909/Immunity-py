@@ -1,0 +1,15 @@
+;Promiscuous Mode Monitoring
+;(These are API's that can be used
+;to place the NIC into promiscuous mode)
+;
+ws2_32.dll|SOCKET WSASocketA( int af, int type, int protocol, LPWSAPROTOCOL_INFOA lpProtocolInfo, UINT group, DWORD dwFlags)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|SOCKET WSASocketW( int af, int type, int protocol, LPWSAPROTOCOL_INFOW lpProtocolInfo, UINT group, DWORD dwFlags)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|SOCKET WSAAPI socket( int af, int type, int protocol)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int bind(SOCKET Socket, const struct sockaddr* name, int namelen)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int WSAIoctl( SOCKET Socket, DWORD dwIoControlCode, LPVOID lpvInBuffer, DWORD cbInBuffer, LPVOID lpvOutBuffer, DWORD cbOutBuffer, LPDWORD lpcbBytesReturned, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int ioctlsocket( SOCKET Socket, long cmd, u_long* argp)|Out|FailureIfRetValue=0xFFFFFFFF

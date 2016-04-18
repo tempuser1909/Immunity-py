@@ -1,0 +1,75 @@
+;Process Injection Monitoring
+;
+;
+kernel32.dll|LPVOID VirtualAllocEx( HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)|Out
+;
+kernel32.dll|HANDLE CreateRemoteThread( HANDLE hProcess, LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId)|Out|FailureIfNullRet
+;
+kernel32.dll|HANDLE OpenProcess( DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId)|FailureIfNullRet
+;
+kernel32.dll|HANDLE OpenThread( DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwThreadId)|FailureIfNullRet
+;
+kernel32.dll|BOOL ReadProcessMemory( HANDLE hProcess, LPCVOID lpBaseAddress, LPVOID lpBuffer:PointedDataSize=Arg5, DWORD nSize, LPDWORD lpNumberOfBytesRead )|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL WriteProcessMemory( HANDLE hProcess, LPVOID lpBaseAddress, LPVOID lpBuffer:PointedDataSize=Arg4, DWORD nSize, LPDWORD lpNumberOfBytesWritten )|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateToolhelp32Snapshot( DWORD dwFlags, DWORD th32ProcessID)|FailureIfNullRet
+;
+kernel32.dll|BOOL Process32First( HANDLE hSnapshot, LPPROCESSENTRY32 lppe)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Process32FirstW( HANDLE hSnapshot, LPPROCESSENTRY32W lppe)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Process32Next( HANDLE hSnapshot, LPPROCESSENTRY32 lppe)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Process32NextW( HANDLE hSnapshot, LPPROCESSENTRY32W lppe)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Module32First( HANDLE hSnapshot, LPMODULEENTRY32 lpme)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Module32FirstW( HANDLE hSnapshot, LPMODULEENTRY32W lpme)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Module32Next( HANDLE hSnapshot, LPMODULEENTRY32 lpme)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Module32NextW( HANDLE hSnapshot, LPMODULEENTRY32W lpme)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Thread32First( HANDLE hSnapshot, LPTHREADENTRY32 lpte)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL Thread32Next( HANDLE hSnapshot, LPTHREADENTRY32 lpte)|Out|FailureIfNullRet
+;
+user32.dll|DWORD GetWindowThreadProcessId( HWND hWnd, LPDWORD lpdwProcessId)|Out
+;
+user32.dll|HHOOK SetWindowsHookA(int idHook, HOOKPROC lpfn)
+;
+user32.dll|HHOOK SetWindowsHookExA( int idHook, HOOKPROC lpfn, HINSTANCE hMod, DWORD dwThreadId)
+;
+user32.dll|HHOOK SetWindowsHookExW( int idHook, HOOKPROC lpfn, HINSTANCE hMod, DWORD dwThreadId)
+;
+user32.dll|HHOOK SetWindowsHookW(int idHook, HOOKPROC lpfn)
+;
+kernel32.dll|BOOL SetThreadContext( HANDLE hThread, const CONTEXT* lpContext)|Out
+;
+kernel32.dll|EXECUTION_STATE SetThreadExecutionState( EXECUTION_STATE esFlags)
+;
+kernel32.dll|BOOL GetThreadContext( HANDLE hThread, LPCONTEXT lpContext)|FailureIfNullRet
+;
+kernel32.dll|DWORD SuspendThread( HANDLE hThread)
+;
+kernel32.dll|DWORD ResumeThread( HANDLE hThread)
+;
+ntdll.dll|NtMapViewOfSection(HANDLE SectionHandle,HANDLE ProcessHandle,PVOID *BaseAddress ,ULONG ZeroBits ,ULONG CommitSize,PLARGE_INTEGER SectionOffset ,PULONG ViewSize,SECTION_INHERIT InheritDisposition,ULONG AllocationType ,ULONG Protect)|FailureIfNotNullRet
+;
+kernel32.dll|DWORD QueueUserAPC( PAPCFUNC pfnAPC, HANDLE hThread, ULONG_PTR dwData)|Out
+;
+advapi32.dll|BOOL OpenThreadToken( HANDLE ThreadHandle, DWORD DesiredAccess, BOOL OpenAsSelf, PHANDLE TokenHandle)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL OpenProcessToken( HANDLE ProcessHandle, DWORD DesiredAccess, PHANDLE TokenHandle)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL AdjustTokenPrivileges( HANDLE TokenHandle, BOOL DisableAllPrivileges, PTOKEN_PRIVILEGES NewState, DWORD BufferLength, PTOKEN_PRIVILEGES PreviousState, PDWORD ReturnLength)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL LookupPrivilegeNameA( LPCSTR  lpSystemName, PLUID lpLuid, LPSTR  lpName, LPDWORD cchName)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL LookupPrivilegeNameW( LPCWSTR lpSystemName, PLUID lpLuid, LPWSTR lpName, LPDWORD cchName)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL LookupPrivilegeValueA( LPCSTR  lpSystemName, LPCSTR  lpName, PLUID lpLuid)|Out|FailureIfNullRet
+;
+advapi32.dll|BOOL LookupPrivilegeValueW( LPCWSTR lpSystemName, LPCWSTR lpName, PLUID lpLuid)|Out|FailureIfNullRet
+

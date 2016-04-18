@@ -1,0 +1,10 @@
+;Keylogging Monitoring
+;(Need More Here)
+;
+user32.dll|BOOL GetKeyboardState( PBYTE lpKeyState)|Out|FailureIfNullRet
+;
+user32.dll|SHORT GetKeyState( int nVirtKey )
+;
+user32.dll|SHORT GetAsyncKeyState( int vKey )
+;
+user32.dll|HWND GetForegroundWindow()|FailureIfNullRet

@@ -1,0 +1,22 @@
+;General Socket Communication Monitoring
+;
+;
+ws2_32.dll|int WSAStartup( WORD wVersionRequested, LPWSADATA lpWSAData)|Out|FailureIfNotNullRet
+;
+ws2_32.dll|int listen( SOCKET Socket, int backlog)|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|SOCKET accept( SOCKET Socket, struct sockaddr* addr, int* addrlen)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int recv( SOCKET Socket, PBYTE buf:PointedDataSize=Arg3, int len, int flags)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int recvfrom( SOCKET Socket, PBYTE buf:PointedDataSize=Arg3, int len, int flags, struct sockaddr* from, int* fromlen)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int WSARecvFrom( SOCKET Socket, LPWSABUF lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesRecvd, LPDWORD lpFlags, struct sockaddr* lpFrom, LPINT lpFromlen, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int WSARecv( SOCKET Socket, LPWSABUF lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesRecvd, LPDWORD lpFlags, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int send( SOCKET Socket, PBYTE buf:PointedDataSize=Arg3, int len, int flags)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int WSASend( SOCKET Socket, LPWSABUF lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesSent, DWORD dwFlags, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfRetValue=0xFFFFFFFF
+;
+ws2_32.dll|int WSASendTo( SOCKET Socket, LPWSABUF lpBuffers, DWORD dwBufferCount, LPDWORD lpNumberOfBytesSent, DWORD dwFlags, const struct sockaddr* lpTo, int iToLen, LPWSAOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)|Out|FailureIfRetValue=0xFFFFFFFF

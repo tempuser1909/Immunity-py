@@ -1,0 +1,40 @@
+;Registry Monitoring
+;
+;
+advapi32.dll|LONG RegOpenKeyA( HKEY hKey, LPCSTR  lpSubKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegOpenKeyExA( HKEY hKey, LPCSTR  lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegOpenKeyExW( HKEY hKey, LPCWSTR lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegOpenKeyW( HKEY hKey, LPCWSTR lpSubKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegCreateKeyA( HKEY hKey, LPCSTR  lpSubKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegCreateKeyExA( HKEY hKey, LPCSTR  lpSubKey, DWORD Reserved, LPSTR  lpClass, DWORD dwOptions, REGSAM samDesired, LPSECURITY_ATTRIBUTES lpSecurityAttributes, PHKEY phkResult, LPDWORD lpdwDisposition)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegCreateKeyExW( HKEY hKey, LPCWSTR lpSubKey, DWORD Reserved, LPWSTR lpClass, DWORD dwOptions, REGSAM samDesired, LPSECURITY_ATTRIBUTES lpSecurityAttributes, PHKEY phkResult, LPDWORD lpdwDisposition)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegCreateKeyW( HKEY hKey, LPCWSTR lpSubKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegQueryValueA( HKEY hKey, LPCSTR  lpSubKey, LPSTR  lpValue, PLONG lpcbValue)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegQueryValueExA( HKEY hKey, LPCSTR  lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegQueryValueExW( HKEY hKey, LPCWSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegQueryValueW( HKEY hKey, LPCWSTR lpSubKey, LPWSTR lpValue, PLONG lpcbValue)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegSetValueA( HKEY hKey, LPCSTR  lpSubKey, DWORD dwType, LPCSTR  lpData, DWORD cbData)|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegSetValueExA( HKEY hKey, LPCSTR  lpValueName, DWORD Reserved, DWORD dwType, const BYTE* lpData, DWORD cbData)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegSetValueExW( HKEY hKey, LPCWSTR lpValueName, DWORD Reserved, DWORD dwType, const BYTE* lpData, DWORD cbData)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegSetValueW( HKEY hKey, LPCWSTR lpSubKey, DWORD dwType, LPCWSTR lpData, DWORD cbData)|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegCloseKey( HKEY hKey)|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegConnectRegistryA( LPCSTR  lpMachineName, HKEY hKey, PHKEY phkResult)|Out|FailureIfNotNullRet
+;
+advapi32.dll|LONG RegConnectRegistryW( LPCWSTR lpMachineName, HKEY hKey, PHKEY phkResult)|Out|FailureIfNotNullRet

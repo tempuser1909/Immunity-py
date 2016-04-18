@@ -1,0 +1,59 @@
+;Generic Malicious Indicators
+;
+;
+;CreateSemaporeEx Only on vista
+kernel32.dll|HANDLE CreateSemaphoreEx( LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount, LPCTSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)|Out|FailureIfNullRet 
+;
+;CreateMutexExA Only on vista
+kernel32.dll|HANDLE CreateMutexExA( LPSECURITY_ATTRIBUTES lpMutexAttributes, LPCTSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)|Out|FailureIfNullRet
+;
+;CreateMutexExW Only on vista
+kernel32.dll|HANDLE CreateMutexExW( LPSECURITY_ATTRIBUTES lpMutexAttributes, LPCTSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)|Out|FailureIfNullRet
+;
+;CreateEventExA Only on vista
+kernel32.dll|HANDLE CreateEventExA( LPSECURITY_ATTRIBUTES lpEventAttributes, LPCTSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)|Out|FailureIfNotNull
+;
+;CreateEventExW Only on vista
+kernel32.dll|HANDLE CreateEventExW( LPSECURITY_ATTRIBUTES lpEventAttributes, LPCTSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess)|Out|FailureIfNotNull
+;
+kernel32.dll|HANDLE CreateMutexA( LPSECURITY_ATTRIBUTES lpMutexAttributes, BOOL bInitialOwner, LPCSTR  lpName)|Out|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateMutexW( LPSECURITY_ATTRIBUTES lpMutexAttributes, BOOL bInitialOwner, LPCWSTR lpName)|Out|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateEventA( LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCSTR  lpName)|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateEventW( LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCWSTR lpName)|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateSemaphoreA( LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount, LPCSTR  lpName)|Out|FailureIfNullRet
+;
+kernel32.dll|HANDLE CreateSemaphoreW( LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount, LPCWSTR lpName)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL VirtualProtect( LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL VirtualProtectEx( HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect)|Out|FailureIfNullRet
+;
+kernel32.dll|HMODULE LoadLibraryA( LPCSTR  lpFileName)|FailureIfNullRet
+;
+kernel32.dll|HMODULE LoadLibraryExA( LPCSTR  lpFileName, HANDLE hFile, DWORD dwFlags)|FailureIfNullRet
+;
+kernel32.dll|HMODULE LoadLibraryExW( LPCWSTR lpFileName, HANDLE hFile, DWORD dwFlags)|FailureIfNullRet
+;
+kernel32.dll|HMODULE LoadLibraryW( LPCWSTR lpFileName)|FailureIfNullRet
+;
+kernel32.dll|DWORD LoadModule( LPCSTR lpModuleName, LPVOID lpParameterBlock)|Out
+;
+kernel32.dll|HGLOBAL LoadResource( HMODULE hModule, HRSRC hResInfo)|FailureIfNullRet
+;
+kernel32.dll|HMODULE GetModuleHandleA( LPCSTR  lpModuleName)|FailureIfNullRet
+;
+kernel32.dll|BOOL GetModuleHandleExA( DWORD dwFlags, LPCSTR  lpModuleName, HMODULE* phModule)|Out|FailureIfNullRet
+;
+kernel32.dll|BOOL GetModuleHandleExW( DWORD dwFlags, LPCWSTR lpModuleName, HMODULE* phModule)|Out|FailureIfNullRet
+;
+kernel32.dll|HMODULE GetModuleHandleW( LPCWSTR lpModuleName)|FailureIfNullRet
+;
+kernel32.dll|FARPROC GetProcAddress( HMODULE hModule, LPCSTR lpProcName)|FailureIfNullRet
+;
+ntdll.dll|NtLoadDriver(PUNICODE_STRING DriverServiceName)|FailureIfNotNullRet
+;
+ntdll.dll|NtSetSystemInformation(SYSTEM_INFORMATION_CLASS SystemInformationClass,PVOID SystemInformation,ULONG SystemInformationLength)|FailureIfNotNullRet
