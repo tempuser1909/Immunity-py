@@ -27,7 +27,7 @@ from midlconst import *
 DESC="Goes through an executable and gets the IDL file from it that MIDL compiled into it."
 output_dir="UNMIDL_RESULTS"
 def usage(imm):
-    imm.Log("!unmidl -m module",focus=1)
+    imm.log("!unmidl -m module",focus=1)
     
 #we assume we've compiled it with /robust (i.e. 2k)
 assume_robustflag=1
@@ -1683,7 +1683,7 @@ def main(args):
         for key in allmodules.keys():
             mod.append(allmodules[key].getPath())
         mod_unmidl = imm.comboBox("Please choose module to unmidl", mod)
-        imm.Log("Module to unmidl : %s" % mod_unmidl)
+        imm.log("Module to unmidl : %s" % mod_unmidl)
                 
     
     try:
